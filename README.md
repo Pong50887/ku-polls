@@ -17,8 +17,8 @@ To be added.
 
 ## Project Documents
 
-All project documents are in the [Project Wiki](../../ku-polls/wiki/Home).
+All project documents are in the [Project Wiki](../../wiki/Home).
 
-- [Vision Statement](../../ku-polls/wiki/Vision-and-Scope)
+- [Vision Statement](../../wiki/Vision-and-Scope)
 - [Requirements](../../wiki/Requirements)
 - [Project Plan](../../wiki/Project-Plan)

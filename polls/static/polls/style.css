@@ -1,7 +1,8 @@
-li a {
+a:link, a:visited, a:hover, a:active {
     color: white;
 }
 body {
+    color: white;
     background: white url("images/test.jpg") no-repeat;
     background-size: cover;
 }

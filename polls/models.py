@@ -36,7 +36,7 @@ class Question(models.Model):
         Determine if the question was published recently.
 
         Returns:
-            bool: True if the question was published within the last day, otherwise False.
+            bool: True if published within the last day, else False.
         """
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
@@ -51,7 +51,7 @@ class Question(models.Model):
         Determine if the question is published.
 
         Returns:
-            bool: True if the current time is on or after the publication date, otherwise False.
+            bool: True if the question is published, else False.
         """
         now = timezone.localtime()
         return now >= self.pub_date
@@ -66,7 +66,7 @@ class Question(models.Model):
         Determine if the question is open for voting.
 
         Returns:
-            bool: True if the current time is between the publication date and end date, otherwise False.
+            bool: True if within voting period, else False.
         """
         now = timezone.localtime()
         if self.end_date:

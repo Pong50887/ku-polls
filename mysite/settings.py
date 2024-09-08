@@ -28,7 +28,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,6 +49,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+   'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_REDIRECT_URL = 'polls:index'
+LOGOUT_REDIRECT_URL = 'polls:index'
 
 ROOT_URLCONF = 'mysite.urls'
 

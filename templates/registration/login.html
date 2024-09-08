@@ -7,10 +7,7 @@
 <body>
     <header>
         <a href="{% url 'polls:index' %}">Home</a>
-        {% if user.is_authenticated %}
-            <strong>{{ user.username }}</strong>
-            <a href ="{% url 'logout' %}">Logout</a>
-        {% endif %}
+        <a href="{% url 'signup' %}">Signup</a>
     </header>
     <h2>Register</h2>
     {% if messages %}

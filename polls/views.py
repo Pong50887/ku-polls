@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
@@ -40,18 +40,27 @@ class DetailView(generic.DetailView):
         the poll question does not exist or voting is not allowed.
         """
         try:
-            self.question = self.get_object()
-        except Exception:
+            question = get_object_or_404(Question, pk=kwargs['pk'])
+        except (Question.DoesNotExist, Http404):
             messages.error(request, f"Poll question {kwargs['pk']}"
                                     f" does not exist.")
             return redirect("polls:index")
+
+        this_user = request.user
+        try:
+            prev_vote = Vote.objects.get(user=this_user,
+                                         choice__question=question)
+        except (Vote.DoesNotExist, TypeError):
+            prev_vote = None
+
+        if not question.can_vote():
+            messages.error(request, f"Poll question {kwargs['pk']}"
+                                    f" does not allow voting.")
+            return redirect("polls:index")
         else:
-            if not self.question.can_vote():
-                messages.error(request, f"Poll question {kwargs['pk']}"
-                                        f" does not allow voting.")
-                return redirect("polls:index")
-            else:
-                return super().get(request, *args, **kwargs)
+            return render(request, self.template_name,
+                          {"question": question,
+                           "prev_vote": prev_vote})
 
 
 class ResultsView(generic.DetailView):
@@ -83,11 +92,13 @@ def vote(request, question_id):
         vote = Vote.objects.get(user=this_user, choice__question=question)
         # update this vote
         vote.choice = selected_choice
+        vote.save()
+        messages.success(request, f"Your vote for '{vote.choice.choice_text}' has been updated.")
     except Vote.DoesNotExist:
         # no matching vote - create a new Vote
-        vote = Vote(user=this_user, choice=selected_choice)
+        Vote.objects.create(user=this_user, choice=selected_choice)
+        messages.success(request, f"Your vote for '{selected_choice.choice_text}' has been saved.")
 
-    vote.save()
-    messages.success(request, f"Your choice ( {vote.choice} ) has been saved.")
+    # messages.success(request, f"Your choice ( {vote.choice} ) has been saved.")
 
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))

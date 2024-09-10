@@ -6,3 +6,28 @@ body {
     background: white url("images/test.jpg") no-repeat;
     background-size: cover;
 }
+.template{
+    background: transparent;
+    padding: 15px;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.right{
+    background-color: #E87A28;
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    width: 80px;
+    transition: background-color 0.3s ease;
+    margin: 20px 0 20px 10px;
+}
+
+.nav_right{
+    display: flex;
+    align-items: center;
+}

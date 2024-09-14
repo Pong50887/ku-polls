@@ -1,4 +1,4 @@
-"""This is views class."""
+"""Views for handling poll-related functionality in the Polls application."""
 from logging import getLogger
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
@@ -11,6 +11,13 @@ from .models import Choice, Question, Vote
 
 
 class IndexView(generic.ListView):
+    """
+    Display the list of the latest five published poll questions.
+
+    Attributes:
+        template_name (str): The template for rendering the view.
+        context_object_name (str): The name of the context variable containing the list of questions.
+    """
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
@@ -25,6 +32,13 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
+    """
+    Display the details of a poll question.
+
+    Attributes:
+        model (Question): The model representing the poll question.
+        template_name (str): The template for rendering the view.
+    """
     model = Question
     template_name = 'polls/detail.html'
 
@@ -65,7 +79,7 @@ class DetailView(generic.DetailView):
 
 
 def get_client_ip(request):
-    """Get the visitor’s IP address using request headers."""
+    """Return the visitor’s IP address using request headers."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]

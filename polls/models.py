@@ -1,4 +1,4 @@
-"""This is models class."""
+"""Models for the Polls application, including Question, Choice, and Vote."""
 import datetime
 from django.db import models
 from django.utils import timezone
@@ -9,7 +9,6 @@ from django.contrib.auth.models import User
 class Question(models.Model):
     """
     Represents a question in the poll.
-
     Attributes:
         question_text (str): The text of the question.
         pub_date (datetime): The date when the question was published.
@@ -79,7 +78,6 @@ class Question(models.Model):
 class Choice(models.Model):
     """
     Represents a choice for a question in the poll.
-
     Attributes:
         question (Question): The question to which the choice belongs.
         choice_text (str): The text of the choice.
@@ -105,7 +103,7 @@ class Choice(models.Model):
 
 
 class Vote(models.Model):
-    """A vote by a user for a choice in a poll"""
+    """A vote by a user for a choice in a poll."""
 
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -1,16 +1,16 @@
-"""This is setting for admin"""
+"""Admin class."""
 from django.contrib import admin
 from .models import Choice, Question
 
 
 class ChoiceInline(admin.TabularInline):
-    """Setting for admin"""
+    """Inline admin descriptor for Choice model."""
     model = Choice
     extra = 3
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    """class Question for Admin"""
+    """Admin interface for the Question model."""
     fieldsets = [
         (None,               {'fields': ['question_text']}),
         ('Date information', {'fields': ['pub_date', 'end_date'], 'classes': ['collapse']}),

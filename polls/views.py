@@ -1,7 +1,4 @@
-"""
-Views for handling poll-related functionality in the Polls application.
-"""
-
+"""Views for handling poll-related functionality in the Polls application."""
 from logging import getLogger
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404

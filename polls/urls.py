@@ -1,3 +1,8 @@
+"""
+URL configuration for the Polls application.
+
+Defines the URL patterns and their corresponding views for the Polls app.
+"""
 from django.urls import path
 
 from . import views

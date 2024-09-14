@@ -1,3 +1,4 @@
+"""This is urls class."""
 from django.urls import path
 
 from . import views

@@ -1,3 +1,4 @@
+"""This is views class."""
 from logging import getLogger
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404

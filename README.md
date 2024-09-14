@@ -1,3 +1,6 @@
+[![style checking](https://github.com/Pong50887/ku-polls/actions/workflows/style-checking.yml/badge.svg)](https://github.com/Pong50887/ku-polls/actions/workflows/style-checking.yml)
+[![Django Runtest](https://github.com/Pong50887/ku-polls/actions/workflows/python-unittest.yml/badge.svg)](https://github.com/Pong50887/ku-polls/actions/workflows/python-unittest.yml)
+
 ## KU Polls: Online Survey Questions 
 
 An application to conduct online polls and surveys based

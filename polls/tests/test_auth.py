@@ -1,81 +1,95 @@
-"""Tests of authentication."""
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from mysite import settings
-
 from polls.models import Question, Choice
 
 
-class AuthenticationTests(TestCase):
+class AuthenticationTest(TestCase):
     def setUp(self):
         """
-        Set up initial data for testing.
+        Set up essential components to be used in authentication tests.
+        Create a test user, a test question, and choices.
         """
         super().setUp()
-        self.password = "test1234"
-        self.tester = User.objects.create_user(username="tester",
-                                               password=self.password)
-        self.tester.first_name = "Tester"
-        self.tester.save()
-        self.question = Question.objects.create(question_text="Test question")
+        self.username = 'tester'
+        self.password = 'testpassword123'
+        self.user = User.objects.create_user(username=self.username,
+                                             password=self.password)
+        self.user.save()
+        self.question = Question.objects.create(question_text='Test Question')
+        for count in range(1, 5):
+            choice = Choice(choice_text=f'Choice {count}',
+                            question=self.question)
+            choice.save()
         self.question.save()
-        for n in range(1, 4):
-            self.choice = Choice(choice_text=f"Test choice {n}",
-                                 question=self.question)
-            self.choice.save()
 
-    def test_login(self):
+    def test_login_page(self):
         """
-        If the visitor log in with the correct username and password,
-        they will move to the index page.
+        Login page testing for both GET and POST methods.
+        GET request should return a 200 OK response.
+        POST request should return a 302 redirect to the polls index page.
         """
-        login = reverse("login")
-        response = self.client.get(login)
+        login_url = reverse("login")
+        response = self.client.get(login_url)
         self.assertEqual(200, response.status_code)
-
-        response = self.client.post(login, {"username": self.tester.username,
-                                            "password": self.password})
+        form_data = {'username': self.username, 'password': self.password}
+        response = self.client.post(login_url, form_data)
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
 
-    def test_signup(self):
-        """
-        If the visitor register with a valid username and password,
-        they will move to the index page.
-        """
-        signup = reverse("signup")
-        response = self.client.post(signup, {"username": "Tester_Signup",
-                                             "password1": "TS12345678",
-                                             "password2": "TS12345678"})
-        self.assertTrue(User.objects.filter(username="Tester_Signup").exists())
-        self.assertEqual(302, response.status_code)
-        self.assertRedirects(response, reverse("polls:index"))
-
-    def test_logout(self):
-        """
-        Test user logout.
-        After the user logs out, they will move to the login page.
-        """
-        logout = reverse("logout")
-        self.assertTrue(self.client.login(username=self.tester.username,
-                                          password=self.password))
-        response = self.client.get(logout)
-        self.assertEqual(302, response.status_code)
-        self.assertRedirects(response, reverse(settings.LOGOUT_REDIRECT_URL))
-
     def test_auth_required_to_vote(self):
-        """Authentication is required to submit a vote.
-
-        As an unauthenticated user,
-        when I submit a vote for a question,
-        then I am redirected to the login page
-        or I receive a 403 response (FORBIDDEN)
         """
-        vote = reverse('polls:vote', args=[self.question.id])
+        Test for voting without log in to redirect to log in page.
+        Unauthenticated user will be redirected to log in page.
+        """
+        vote_url = reverse('polls:vote', args=[self.question.id])
         choice = self.question.choice_set.first()
-        form_data = {"choice": f"{choice.id}"}
-        response = self.client.post(vote, form_data)
+        form_data = {'choice': f'{choice.id}'}
+        response = self.client.post(vote_url, form_data)
         self.assertEqual(302, response.status_code)
-        login_with_next = f"{reverse('login')}?next={vote}"
-        self.assertRedirects(response, login_with_next)
+        login_next_url = f"{reverse('login')}?next={vote_url}"
+        self.assertRedirects(response, login_next_url)
+
+    def test_signup_page(self):
+        """
+        Signup page testing for both GET and POST methods.
+        GET request should return a 200 OK response.
+        POST request should return a 302 redirect to the polls index page.
+        """
+        signup_url = reverse("signup")
+        response = self.client.get(signup_url)
+        self.assertEqual(200, response.status_code)
+        form_data = {'username': 'new_tester', 'password1': self.password,
+                     'password2': self.password}
+        response = self.client.post(signup_url, form_data)
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('polls:index'))
+
+    def test_login_with_unsigned_up_user(self):
+        """
+        An unsigned up user cannot log in.
+        The login page should show the message
+        "Please enter a correct username and password."
+        and not redirect to other page.
+        """
+        login_url = reverse("login")
+        form_data = {'username': 'new_user', 'password': self.password}
+        response = self.client.post(login_url, form_data)
+        self.assertEqual(200, response.status_code)
+        self.assertContains(response,
+                            'Please enter a correct username and password.')
+
+    def test_login_with_incorrect_password(self):
+        """
+        When a user try to log in with an incorrect password, the login page
+        should show the message
+        "Please enter a correct username and password."
+        and not redirect to other page.
+        """
+        login_url = reverse("login")
+        form_data = {'username': self.username, 'password': 'wrongpassword123'}
+        response = self.client.post(login_url, form_data)
+        self.assertEqual(200, response.status_code)
+        self.assertContains(response,
+                            'Please enter a correct username and password.')

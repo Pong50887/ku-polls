@@ -12,11 +12,36 @@ https://cpske.github.io/ISP) course at [Kasetsart University](https://www.ku.ac.
 
 ## Installation
 
-To be added. If the procedure is long, put it in the wiki or a separate file.
+Read how to install and configure application from [Installation.md](Installation.md).
 
 ## Running the Application
 
-To be added.
+1. Activate the virtual environment.
+   * macOS / Linux
+     ```
+     . venv/bin/activate 
+     ```
+   * Windows
+     ```
+     venv\Scripts\activate
+     ```
+2. Starting development server.
+    ```
+    python manage.py runserver
+    ```
+    > Note : If you can't use **python**, change it to **python3**.
+3. To use the application, open the browser and access http://localhost:8000.
+4. To close the application, quit the server with CONTROL-C.
+5. Deactivate the virtual environment.
+   ```
+    deactivate
+    ```
+## Demo Users
+| Username | Password |
+|-------|----------|
+| demo1 | hackme11 |
+| demo2 | hackme22 |
+| demo3 | hackme33 |
 
 ## Project Documents
 

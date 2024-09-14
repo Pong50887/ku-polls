@@ -1,32 +1,33 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Signup</title>
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'polls/login.css' %}">
 </head>
 <body>
-    <header>
-        <a href="{% url 'polls:index' %}">Home</a>
-        <a href="{% url 'signup' %}">Signup</a>
-    </header>
-    <h2>Register</h2>
-    {% if messages %}
-        {% for msg in messages %}
-            <div>
-                <strong>{{ msg }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
-        <form method="POST">
-            {% csrf_token %}
-            <table style="padding: 2ex;">
-            {{ form.as_table }}     {# this line shows the sign-up form #}
-            <tr>
-            <td colspan="2">
-            <button type="submit">Register</button>
-            </td>
-            </tr>
-            </table>
-        </form>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login</h2>
+            {% if messages %}
+                <div class="messages-container">
+                    {% for msg in messages %}
+                        <div class="message">
+                            <strong>{{ msg }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="button">Login</button>
+            </form>
+        </div>
+        <footer class="footer-nav">
+            <a href="{% url 'polls:index' %}" class="button">Home</a>
+            <a href="{% url 'signup' %}" class="button">Register</a>
+        </footer>
+    </div>
 </body>
 </html>

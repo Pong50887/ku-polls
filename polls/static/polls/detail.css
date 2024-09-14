@@ -1,0 +1,80 @@
+a:link, a:visited, a:hover, a:active {
+    color: white;
+}
+
+.messages-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+body {
+    color: white;
+    background: white url("images/test.jpg") no-repeat;
+    background-size: cover;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.login-box {
+    background: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button {
+    padding: 10px 15px;
+    background-image: url("images/color.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    opacity: 2;
+}
+
+.footer-nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+
+}
+
+.button-submit {
+    margin-bottom: 20px;
+}

@@ -51,4 +51,3 @@ class QuestionModelVoteTests(TestCase):
         past = timezone.now() - datetime.timedelta(days=30)
         question = Question(end_date=past)
         self.assertFalse(question.can_vote())
-        

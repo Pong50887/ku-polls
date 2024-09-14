@@ -1,28 +1,10 @@
 [
 {
   "model": "auth.user",
-  "pk": 3,
-  "fields": {
-    "password": "pbkdf2_sha256$870000$fERcPnXtFpkuH2IWzTreu5$OvBFiJRcoEoekX74qT/DNZCXpfhIFnQvDadEvbWZJ1k=",
-    "last_login": "2024-09-08T14:21:14.048Z",
-    "is_superuser": true,
-    "username": "pong50887",
-    "first_name": "",
-    "last_name": "",
-    "email": "pichayoot.pong@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2024-09-08T10:06:21.499Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
   "pk": 6,
   "fields": {
     "password": "pbkdf2_sha256$870000$enGaRxTze9v58hGYy3xiWf$fO5eNFd79F0v3cPuR5bYCEBZDEMZ0AcqDTDQp/OUIQo=",
-    "last_login": null,
+    "last_login": "2024-09-14T10:34:22.921Z",
     "is_superuser": false,
     "username": "demo1",
     "first_name": "",
@@ -67,6 +49,24 @@
     "is_staff": false,
     "is_active": true,
     "date_joined": "2024-09-08T14:26:33Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$3gmHupnVY2c8qAZmD8ODJg$taaHNQtZtQrX2a3RTHjibYnceae86YDZwg1fJ9FVEL0=",
+    "last_login": "2024-09-14T11:20:30.600Z",
+    "is_superuser": true,
+    "username": "pong508877",
+    "first_name": "",
+    "last_name": "",
+    "email": "pong@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-09-14T11:20:00.224Z",
     "groups": [],
     "user_permissions": []
   }

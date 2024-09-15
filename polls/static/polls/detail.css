@@ -14,15 +14,32 @@ a:link, a:visited, a:hover, a:active {
     padding: 0;
 }
 
+.navbar {
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+}
+
+.nav_right {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
 body {
     color: white;
     background: white url("images/test.jpg") no-repeat;
     background-size: cover;
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .login-container {
@@ -30,13 +47,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-
+    padding-top: 20px;
 }
 
 .login-box {
     background: transparent;
-    padding: 20px;
+    padding-bottom: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: 100%;

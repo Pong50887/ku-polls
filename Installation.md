@@ -28,29 +28,24 @@
    pip install -r requirements.txt
    ```
    > Note : If you can't use **pip**, change it to **pip3**.
-6. Set values for externalized variables.
-   * macOS / Linux
-     ```
-     cp sample.env .env 
-     ```
-   * Windows
-     ```
-     copy sample.env .env
-     ```
-7. In `.env` file, set `DEBUG` to `True`
+   
+6. Migrate the Database
+    ```
+    python manage.py migrate
+    ```
+
+7. Load polls and users data
+    ```
+    python manage.py loaddata data/polls-v4.json data/votes-v4.json data/users.json
+    ```
+
+8. Create `.env` file
+    ```
+    cp sample.env .env
+    ```
+
+9. In `.env` file, set `DEBUG` to `True`
     ```
     DEBUG = True
-8. Run migrations.
-   ``` 
-   python manage.py migrate
-   ```
-9. Run test.
-   ``` 
-   python manage.py test polls
-   ```
-10. Install data from the data fixtures.
-   ``` 
-   python manage.py loaddata data/polls-v4.json data/votes-v4.json data/users.json
-   ```
-
+    ```
    

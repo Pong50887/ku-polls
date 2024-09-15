@@ -37,17 +37,20 @@
      ```
      copy sample.env .env
      ```
-7. Run migrations.
+7. In `.env` file, set `DEBUG` to `True`
+    ```
+    DEBUG = True
+8. Run migrations.
    ``` 
    python manage.py migrate
    ```
-8. Run test.
+9. Run test.
    ``` 
    python manage.py test polls
    ```
-9. Install data from the data fixtures.
+10. Install data from the data fixtures.
    ``` 
-   python manage.py loaddata data/users.json data/polls.json
+   python manage.py loaddata data/polls-v4.json data/votes-v4.json data/users.json
    ```
 
    

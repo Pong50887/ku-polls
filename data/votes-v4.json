@@ -30,5 +30,13 @@
     "choice": 30,
     "user": 9
   }
+},
+{
+  "model": "polls.vote",
+  "pk": 13,
+  "fields": {
+    "choice": 55,
+    "user": 6
+  }
 }
 ]

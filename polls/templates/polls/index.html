@@ -46,6 +46,11 @@
                         <a href="{% url 'polls:results' question.id %}">
                             <button class="button">Show Result</button>
                         </a>
+                        {% if question.can_vote %}
+                            Status : Open
+                        {% else %}
+                            Status : Closed
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}

@@ -7,13 +7,31 @@
      <link rel="stylesheet" href="{% static 'polls/detail.css' %}">
 </head>
 <body>
-    {% if messages %}
-    <ul class="messages">
-        {% for msg in messages %}
-            <li class="{{msg.tags}}">{{ msg }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    <div class="navbar">
+        <h1>KU-polls</h1>
+        {% if messages %}
+        <div class="messages-container">
+            <ul class="messages">
+                {% for msg in messages %}
+                    <li class="{{msg.tags}}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="nav_right">
+            {% if user.is_authenticated %}
+                <div class="messages-container">
+                    <p>Welcome back, {{ user.username }}!</p>
+                </div>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Log Out</button>
+                </form>
+            {% else %}
+               <a href="{% url 'login' %}?next={{request.path}}" class="button"> Login </a>
+            {% endif %}
+        </div>
+    </div>
     <div class="login-container">
         <div class="login-box">
         <form action="{% url 'polls:vote' question.id %}" method="post">

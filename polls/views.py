@@ -8,11 +8,13 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 from .models import Choice, Question, Vote
-
+from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+from django.dispatch import receiver
+import logging
 
 class IndexView(generic.ListView):
     """
-    Display the list of the latest five published poll questions.
+    Display the list of all published poll questions.
 
     Attributes:
         template_name (str): The template for rendering the view.
@@ -22,13 +24,12 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        """
-        Return the last five published questions (not including those set to be
-        published in the future).
-        """
-        return Question.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+        """Return published questions."""
+        published_question_list = [q.pk for q in Question.objects.all()
+                                   if q.is_published()]
+        published_questions = (Question.objects.filter
+                               (pk__in=published_question_list))
+        return published_questions.order_by('-pub_date')
 
 
 class DetailView(generic.DetailView):
@@ -79,7 +80,7 @@ class DetailView(generic.DetailView):
 
 
 def get_client_ip(request):
-    """Return the visitor’s IP address using request headers."""
+    """Get the visitor’s IP address using request headers."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
@@ -88,46 +89,65 @@ def get_client_ip(request):
     return ip
 
 
+logger = logging.getLogger('polls')
+
+
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
+
 @login_required
 def vote(request, question_id):
-    """
-    vote() is responsible for handling user votes on a poll question.
-    """
+    """Handle voting for a specific question."""
     question = get_object_or_404(Question, pk=question_id)
-    requested_user = request.user
+    this_user = request.user
     ip_address = get_client_ip(request)
-    logger = getLogger('polls')
-    logger.info(f'{requested_user} logged in from {ip_address}')
 
-    if not question.can_vote():
-        messages.error(request, message=f"Poll {question_id} is not available "
-                                        f"for voting.")
-        return redirect('polls:index')
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        logger.warning(f'{requested_user} failed to vote {question} from '
-                       f'{ip_address}')
+        logger.warning(f"{this_user} failed to vote in {question} "
+                       f"from {ip_address}")
         return render(request, 'polls/detail.html', {
             'question': question,
             'error_message': "You didn't select a choice.",
         })
+
     try:
-        # Find a vote for this user and this question
-        selected_vote = Vote.objects.get(user=requested_user,
-                                         choice__question=question)
-        # Update his vote
-        selected_vote.choice = selected_choice
+        user_vote = Vote.objects.get(user=this_user, choice__question=question)
+        user_vote.choice = selected_choice
+        user_vote.save()
+        logger.info(f'{this_user} voted for Choice {selected_choice.id} '
+                    f'in Question {question.id} from {ip_address}')
+        messages.success(request, f"Your vote was updated to "
+                                  f"'{selected_choice.choice_text}'")
     except Vote.DoesNotExist:
-        # No matching vote - Create a new Vote
-        selected_vote = Vote(user=requested_user, choice=selected_choice)
-    selected_vote.save()
-    logger.info(f'{requested_user} voted for {selected_choice} '
-                f'in {question} from {ip_address}')
-    messages.info(request, message=f"You voted for \"{selected_choice}\".")
-    return HttpResponseRedirect(reverse('polls:results', args=(question.id,
-                                                               )))
+        Vote.objects.create(user=this_user, choice=selected_choice)
+        logger.info(f'{this_user} voted for Choice {selected_choice.id} '
+                    f'in Question {question.id} from {ip_address}')
+        messages.success(request, f"You voted for "
+                                  f"'{selected_choice.choice_text}'")
+
+    return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
+
+
+@receiver(user_logged_in)
+def log_user_login(request, user, **kwargs):
+    """Log a message when a user successfully logs in."""
+    ip_address = get_client_ip(request)
+    logger.info(f'{user} logged in from {ip_address}')
+
+
+@receiver(user_logged_out)
+def log_user_logout(request, user, **kwargs):
+    """Log a message when a user successfully logs out."""
+    ip_address = get_client_ip(request)
+    logger.info(f'{user} logged out from {ip_address}')
+
+
+@receiver(user_login_failed)
+def log_user_login_failed(request, **kwargs):
+    """Log a message when a user login attempt fails."""
+    ip_address = get_client_ip(request)
+    logger.warning(f'User failed to log in from {ip_address}')

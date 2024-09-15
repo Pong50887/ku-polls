@@ -4,7 +4,6 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
-
 def signup(request):
     """Register a new user."""
     if request.method == 'POST':

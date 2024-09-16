@@ -1,0 +1,33 @@
+[run]
+# Ignore standard Python libraries and add-ons
+omit =
+    # Python library files and add-ons
+    /usr/lib/*
+    /usr/local/*
+    .local/*
+    env/*
+
+    # Ignore Django migration files
+    */migrations/*
+
+    # Ignore Django project configuration files (replace 'mysite' with your actual project directory)
+    mysite/*
+
+    # Ignore the manage.py file
+    manage.py
+
+    # Ignore all __init__.py files
+    */__init__.py
+
+[report]
+# Exclude specific methods from coverage reporting
+exclude_lines =
+    # Exclude __str__ and __repr__ methods from coverage reporting
+    def __str__
+    def __repr__
+
+    # Also exclude pass-only methods
+    pass
+
+    # Ignore 'if __name__ == "__main__"' blocks
+    if __name__ == "__main__"
